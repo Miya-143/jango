@@ -1,0 +1,87 @@
+<!DOCTYPE html>
+<html>
+<head>
+    <title>College Management</title>
+    <style>
+        body {
+            font-family: Arial;
+            text-align: center;
+        }
+        button {
+            margin: 5px;
+            padding: 10px;
+            background-color: blue;
+            color: white;
+            border: none;
+        }
+        table {
+            margin: 20px auto;
+            border-collapse: collapse;
+        }
+        th, td {
+            border: 1px solid black;
+            padding: 8px 15px;
+        }
+    </style>
+</head>
+<body>
+
+    <h1>College Data Viewer</h1>
+
+    <!-- Buttons -->
+    <button onclick="loadData('students')">Students</button>
+    <button onclick="loadData('courses')">Courses</button>
+    <button onclick="loadData('teachers')">Teachers</button>
+    <button onclick="loadData('enrollments')">Enrollments</button>
+    <button onclick="loadData('departments')">Departments</button>
+    <button onclick="loadData('exams')">Exams</button>
+    <button onclick="loadData('results')">Results</button>
+
+    <!-- Data Display -->
+    <div id="output"></div>
+
+<script>
+const BASE_URL = "http://127.0.0.1:8000/api/";
+
+// Load Data Function
+function loadData(type) {
+    fetch(BASE_URL + type + "/")
+        .then(response => response.json())
+        .then(data => displayTable(data))
+        .catch(error => console.log(error));
+}
+
+// Display Table
+function displayTable(data) {
+    const output = document.getElementById("output");
+
+    if (data.length === 0) {
+        output.innerHTML = "<p>No data available</p>";
+        return;
+    }
+
+    let table = "<table><tr>";
+
+    // Table headers
+    for (let key in data[0]) {
+        table += `<th>${key}</th>`;
+    }
+    table += "</tr>";
+
+    // Table rows
+    data.forEach(item => {
+        table += "<tr>";
+        for (let key in item) {
+            table += `<td>${item[key]}</td>`;
+        }
+        table += "</tr>";
+    });
+
+    table += "</table>";
+
+    output.innerHTML = table;
+}
+</script>
+
+</body>
+</html>

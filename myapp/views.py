@@ -1,5 +1,7 @@
 from django.http import JsonResponse
 from .models import *
+from django.views.decorators.csrf import csrf_exempt
+import json
 
 # Student View
 def student_list(request):
